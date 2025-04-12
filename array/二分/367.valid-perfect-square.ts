@@ -11,7 +11,20 @@
 // @lcpr-template-end
 // @lc code=start
 function isPerfectSquare(num: number): boolean {
-    
+    let left = 0
+    let right = num;
+    while(left <= right) {
+        const mid = left + ~~((right - left) / 2);
+        const sq = mid * mid;
+        if(sq < num) {
+            left = mid + 1;
+        } else if(sq > num) {
+            right = mid - 1;
+        } else {
+            return true;
+        }
+    }
+    return false;
 };
 // @lc code=end
 
