@@ -79,10 +79,10 @@ function totalFruit(fruits: number[]): number {
 }
 function totalFruit1(fruits: number[]): number {
   // 滑动窗口， 找最长连续子数据
-  const cage = new Map();
-  let res = 0;
   let start = 0,
     end = 0;
+  let res = 0;
+  let cage = new Map();
   while (end < fruits.length) {
     cage.set(fruits[end], (cage.get(fruits[end]) || 0) + 1);
     while (cage.size > 2) {
@@ -96,7 +96,6 @@ function totalFruit1(fruits: number[]): number {
     res = Math.max(res, end - start + 1);
     end++;
   }
-
   return res;
 }
 // @lc code=end
