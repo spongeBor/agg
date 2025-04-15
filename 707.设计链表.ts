@@ -69,88 +69,112 @@
 
 // @lc code=start
 class MyLinkedList {
-  head: any;
-  tail: any;
+  val: number;
+  next: MyLinkedList | null;
   size: number;
+  head: ListNode | null;
+
   constructor() {
-    this.head = null;
-    this.tail = null;
     this.size = 0;
+    this.head = null;
   }
 
   get(index: number): number {
-    if (index < 0 || index >= this.size) return -1;
-    const node = this.getNode(index);
-    return node.val;
-  }
-
-  getNode(index: number): any {
-    let dummy = new ListNode(-1, this.head);
-    for (let i = 0; i <= index; i++) {
-      dummy = dummy.next;
+    // 如果索引无效，返回-1
+    if (index < 0 || index >= this.size) {
+      return -1;
     }
-    return dummy;
+
+    let current = this.head;
+    for (let i = 0; i < index; i++) {
+      current = current!.next;
+    }
+    return current!.val;
   }
 
   addAtHead(val: number): void {
-    const node = new ListNode(val, this.head);
-    this.head = node;
-    if (!this.tail) {
-      this.tail = node;
-    }
+    const newNode = new ListNode(val, this.head);
+    this.head = newNode;
     this.size++;
   }
 
   addAtTail(val: number): void {
-    const node = new ListNode(val, null);
-    if (this.tail) {
-      this.tail.next = node;
+    const newNode = new ListNode(val);
+
+    if (!this.head) {
+      this.head = newNode;
     } else {
-      this.head = node;
+      let current = this.head;
+      while (current.next) {
+        current = current.next;
+      }
+      current.next = newNode;
     }
-    this.tail = node;
+
     this.size++;
   }
 
   addAtIndex(index: number, val: number): void {
+    // 如果索引大于链表长度，不插入节点
     if (index > this.size) {
       return;
     }
+
+    // 如果索引小于等于0，在头部插入
     if (index <= 0) {
       this.addAtHead(val);
       return;
     }
+
+    // 如果索引等于链表长度，在尾部插入
     if (index === this.size) {
       this.addAtTail(val);
       return;
     }
-    const prevNode = this.getNode(index - 1);
-    const node = new ListNode(val, prevNode.next);
-    prevNode.next = node;
-    if (this.size === 0) {
-      this.tail = node;
+
+    // 在中间位置插入
+    let current = this.head;
+    for (let i = 0; i < index - 1; i++) {
+      current = current!.next;
     }
+
+    const newNode = new ListNode(val, current!.next);
+    current!.next = newNode;
     this.size++;
   }
 
   deleteAtIndex(index: number): void {
+    // 如果索引无效，不删除节点
     if (index < 0 || index >= this.size) {
       return;
     }
+
+    // 删除头节点
     if (index === 0) {
-      this.head = this.head.next;
-      if (this.size === 1) {
-        this.tail = null;
-      }
+      this.head = this.head!.next;
       this.size--;
       return;
     }
-    const prev = this.getNode(index - 1);
-    prev.next = prev.next.next;
-    if (index === this.size - 1) {
-      this.tail = prev;
+
+    // 删除其他位置的节点
+    let current = this.head;
+    for (let i = 0; i < index - 1; i++) {
+      current = current!.next;
     }
+
+    current!.next = current!.next!.next;
     this.size--;
+  }
+}
+
+// 定义链表节点类
+class ListNode {
+  val: number;
+  next: ListNode | null;
+
+  constructor(val?: number, next?: ListNode | null) {
+    this.val = val === undefined ? 0 : val;
+    this.next = next === undefined ? null : next;
   }
 }
 
