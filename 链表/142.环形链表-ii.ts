@@ -85,5 +85,35 @@
  * }
  */
 
-function detectCycle(head: ListNode | null): ListNode | null {}
+function detectCycle(head: ListNode | null): ListNode | null {
+  if (!head || !head.next) return null;
+
+  // 使用快慢指针检测是否有环
+  let slow = head;
+  let fast = head;
+
+  // 第一阶段：检测是否存在环
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+
+    // 如果快慢指针相遇，说明存在环
+    if (slow === fast) {
+      // 第二阶段：找到环的入口
+      // 将慢指针重置到头节点
+      slow = head;
+
+      // 两个指针以相同速度移动，相遇点即为环的入口
+      while (slow !== fast) {
+        slow = slow.next;
+        fast = fast.next;
+      }
+
+      return slow;
+    }
+  }
+
+  // 如果快指针到达链表尾部，说明没有环
+  return null;
+}
 // @lc code=end
