@@ -7,11 +7,31 @@
 
 // @lc code=start
 function repeatedSubstringPattern(s: string): boolean {
-    
-};
+  // kmp （后面还要再看）
+  function getNext(s: string): number[] {
+    const next = new Array(s.length).fill(0);
+    let j = 0;
+    for (let i = 1; i < s.length; i++) {
+      while (j > 0 && s[i] !== s[j]) {
+        j = next[j - 1];
+      }
+      if (s[i] === s[j]) {
+        j++;
+      }
+      next[i] = j;
+    }
+    return next;
+  }
+  const next = getNext(s);
+  if (
+    next[s.length - 1] !== 0 &&
+    s.length % (s.length - next[s.length - 1]) === 0
+  ) {
+    return true;
+  }
+  return false;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -27,4 +47,3 @@ function repeatedSubstringPattern(s: string): boolean {
 // @lcpr case=end
 
  */
-
