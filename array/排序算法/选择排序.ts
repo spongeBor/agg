@@ -11,7 +11,19 @@
  * @returns 排序后的数组
  */
 export function selectionSort<T>(arr: T[]): T[] {
-  // TODO: 实现选择排序算法
+  const len = arr.length;
+  if (len <= 1) return arr;
+
+  for (let i = 0; i < len - 1; i++) {
+    let minIndex = i;
+    for (let j = i + 1; j < len; j++) {
+      if (arr[j] < arr[minIndex]) {
+        minIndex = j;
+      }
+    }
+    [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+  }
+
   return arr;
 }
 
