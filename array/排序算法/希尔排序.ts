@@ -1,0 +1,47 @@
+/**
+ * 希尔排序
+ * 时间复杂度: O(n log n) ~ O(n²)，取决于间隔序列
+ * 空间复杂度: O(1)
+ * 稳定性: 不稳定
+ */
+
+/**
+ * 希尔排序算法实现
+ * @param arr 要排序的数组
+ * @returns 排序后的数组
+ */
+export function shellSort<T>(arr: T[]): T[] {
+  // TODO: 实现希尔排序算法
+  return arr;
+}
+
+// 测试用例
+function runTests(): void {
+  // 测试1: 随机数组
+  const randomArr = [64, 34, 25, 12, 22, 11, 90];
+  console.log("原始数组:", randomArr);
+  console.log("排序后:", shellSort([...randomArr]));
+
+  // 测试2: 已排序数组
+  const sortedArr = [1, 2, 3, 4, 5];
+  console.log("原始数组:", sortedArr);
+  console.log("排序后:", shellSort([...sortedArr]));
+
+  // 测试3: 逆序数组
+  const reversedArr = [5, 4, 3, 2, 1];
+  console.log("原始数组:", reversedArr);
+  console.log("排序后:", shellSort([...reversedArr]));
+
+  // 测试4: 重复元素
+  const duplicateArr = [3, 1, 4, 1, 5, 9, 2, 6, 5];
+  console.log("原始数组:", duplicateArr);
+  console.log("排序后:", shellSort([...duplicateArr]));
+
+  // 测试5: 空数组
+  const emptyArr: number[] = [];
+  console.log("原始数组:", emptyArr);
+  console.log("排序后:", shellSort([...emptyArr]));
+}
+
+// 直接运行测试
+runTests();
