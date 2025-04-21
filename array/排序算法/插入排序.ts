@@ -11,7 +11,26 @@
  * @returns 排序后的数组
  */
 export function insertionSort<T>(arr: T[]): T[] {
-  // TODO: 实现插入排序算法
+  const len = arr.length;
+  if (len <= 1) return arr;
+
+  // 逆向实现插入排序
+  for (let i = 1; i < len; i++) {
+    // 当前要插入的元素
+    const current = arr[i];
+    // 从已排序部分从后往前查找插入位置
+    let j = i - 1;
+
+    // 查找插入位置的同时完成元素后移
+    while (j >= 0 && arr[j] > current) {
+      arr[j + 1] = arr[j]; // 元素后移
+      j--;
+    }
+
+    // 插入元素到正确位置
+    arr[j + 1] = current;
+  }
+
   return arr;
 }
 
