@@ -12,7 +12,31 @@
  */
 export function mergeSort<T>(arr: T[]): T[] {
   // TODO: 实现归并排序算法
-  return arr;
+  if (arr.length <= 1) return arr;
+
+  const middle = Math.floor(arr.length / 2);
+  const left = arr.slice(0, middle);
+  const right = arr.slice(middle);
+
+  return merge(mergeSort(left), mergeSort(right));
+}
+
+function merge<T>(left: T[], right: T[]): T[] {
+  const result: T[] = [];
+  let i = 0;
+  let j = 0;
+
+  while (i < left.length && j < right.length) {
+    if (left[i] <= right[j]) {
+      result.push(left[i]);
+      i++;
+    } else {
+      result.push(right[j]);
+      j++;
+    }
+  }
+
+  return [...result, ...left.slice(i), ...right.slice(j)];
 }
 
 // 测试用例
