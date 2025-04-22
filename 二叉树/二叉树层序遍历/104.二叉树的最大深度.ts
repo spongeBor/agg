@@ -21,11 +21,21 @@
  */
 
 function maxDepth(root: TreeNode | null): number {
-    
-};
+  if (!root) return 0;
+  const queue = [root];
+  let depth = 0;
+  while (queue.length) {
+    const length = queue.length;
+    depth++;
+    for (let i = 0; i < length; i++) {
+      const node = queue.shift();
+      node.left && queue.push(node.left);
+      node.right && queue.push(node.right);
+    }
+  }
+  return depth;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -37,4 +47,3 @@ function maxDepth(root: TreeNode | null): number {
 // @lcpr case=end
 
  */
-
