@@ -21,8 +21,8 @@
  */
 
 function levelOrder(root: TreeNode | null): number[][] {
-  return levelOrderRecursive(root);
-  //   return levelOrderIterative(root);
+  //   return levelOrderRecursive(root);
+  return levelOrderIterative(root);
 }
 function levelOrderIterative(root: TreeNode | null): number[][] {
   const result: number[][] = [];
@@ -37,11 +37,9 @@ function levelOrderIterative(root: TreeNode | null): number[][] {
 
     for (let i = 0; i < levelSize; i++) {
       const node = queue.shift();
-      if (node) {
-        level.push(node.val);
-        if (node.left) queue.push(node.left);
-        if (node.right) queue.push(node.right);
-      }
+      level.push(node.val);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
     }
     result.push(level);
   }

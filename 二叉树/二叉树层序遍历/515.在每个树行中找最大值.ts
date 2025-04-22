@@ -21,11 +21,23 @@
  */
 
 function largestValues(root: TreeNode | null): number[] {
-    
-};
+  const result = [];
+  if (!root) return result;
+  const queue = [root];
+  while (queue.length) {
+    const length = queue.length;
+    let max = -Infinity;
+    for (let i = 0; i < length; i++) {
+      const node = queue.shift();
+      max = Math.max(max, node.val);
+      node.left && queue.push(node.left);
+      node.right && queue.push(node.right);
+    }
+    result.push(max);
+  }
+  return result;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -37,4 +49,3 @@ function largestValues(root: TreeNode | null): number[] {
 // @lcpr case=end
 
  */
-

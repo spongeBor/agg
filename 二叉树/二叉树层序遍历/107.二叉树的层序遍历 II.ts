@@ -30,7 +30,6 @@ function levelOrderBottom(root: TreeNode | null): number[][] {
     const arr = [];
     for (let i = 0; i < length; i++) {
       const node = queue.shift();
-      if (!node) continue;
       arr.push(node.val);
       node.left && queue.push(node.left);
       node.right && queue.push(node.right);
