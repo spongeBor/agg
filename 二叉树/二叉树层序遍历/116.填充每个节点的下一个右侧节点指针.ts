@@ -1,0 +1,42 @@
+/*
+ * @lc app=leetcode.cn id=116 lang=typescript
+ * @lcpr version=30104
+ *
+ * [116] 填充每个节点的下一个右侧节点指针
+ */
+
+// @lc code=start
+/**
+ * Definition for _Node.
+ * class _Node {
+ *     val: number
+ *     left: _Node | null
+ *     right: _Node | null
+ *     next: _Node | null
+ *     constructor(val?: number, left?: _Node, right?: _Node, next?: _Node) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.left = (left===undefined ? null : left)
+ *         this.right = (right===undefined ? null : right)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function connect(root: _Node | null): _Node | null {
+    
+};
+// @lc code=end
+
+
+
+/*
+// @lcpr case=start
+// [1,2,3,4,5,6,7]\n
+// @lcpr case=end
+
+// @lcpr case=start
+// []\n
+// @lcpr case=end
+
+ */
+

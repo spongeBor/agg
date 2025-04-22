@@ -21,11 +21,53 @@
  */
 
 function levelOrder(root: TreeNode | null): number[][] {
-    
-};
+  return levelOrderRecursive(root);
+  //   return levelOrderIterative(root);
+}
+function levelOrderIterative(root: TreeNode | null): number[][] {
+  const result: number[][] = [];
+  if (!root) return result;
+
+  const queue: TreeNode[] = [];
+  queue.push(root);
+
+  while (queue.length) {
+    const levelSize = queue.length;
+    const level: number[] = [];
+
+    for (let i = 0; i < levelSize; i++) {
+      const node = queue.shift();
+      if (node) {
+        level.push(node.val);
+        if (node.left) queue.push(node.left);
+        if (node.right) queue.push(node.right);
+      }
+    }
+    result.push(level);
+  }
+  return result;
+}
+
+function levelOrderRecursive(root: TreeNode | null): number[][] {
+  const result: number[][] = [];
+  if (!root) return result;
+
+  const traverse = (node: TreeNode, level: number) => {
+    if (!node) return;
+
+    if (result.length === level) {
+      result.push([]);
+    }
+
+    result[level].push(node.val);
+    traverse(node.left, level + 1);
+    traverse(node.right, level + 1);
+  };
+
+  traverse(root, 0);
+  return result;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -41,4 +83,3 @@ function levelOrder(root: TreeNode | null): number[][] {
 // @lcpr case=end
 
  */
-
