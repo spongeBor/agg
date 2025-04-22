@@ -21,11 +21,21 @@
  */
 
 function rightSideView(root: TreeNode | null): number[] {
-    
-};
+  const result = [];
+  if (!root) return result;
+  const queue = [root];
+  while (queue.length) {
+    const length = queue.length;
+    for (let i = 0; i < length; i++) {
+      const node = queue.shift();
+      if (i === length - 1) result.push(node.val);
+      node.left && queue.push(node.left);
+      node.right && queue.push(node.right);
+    }
+  }
+  return result;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -45,4 +55,3 @@ function rightSideView(root: TreeNode | null): number[] {
 // @lcpr case=end
 
  */
-
