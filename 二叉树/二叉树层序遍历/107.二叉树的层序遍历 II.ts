@@ -20,12 +20,26 @@
  * }
  */
 
+// 102 的变种，只需要将结果反转即可
 function levelOrderBottom(root: TreeNode | null): number[][] {
-    
-};
+  const result = [];
+  if (!root) return result;
+  const queue = [root];
+  while (queue.length) {
+    const length = queue.length;
+    const arr = [];
+    for (let i = 0; i < length; i++) {
+      const node = queue.shift();
+      if (!node) continue;
+      arr.push(node.val);
+      node.left && queue.push(node.left);
+      node.right && queue.push(node.right);
+    }
+    result.unshift(arr);
+  }
+  return result;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -41,4 +55,3 @@ function levelOrderBottom(root: TreeNode | null): number[][] {
 // @lcpr case=end
 
  */
-
