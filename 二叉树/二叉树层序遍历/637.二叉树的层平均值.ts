@@ -21,11 +21,23 @@
  */
 
 function averageOfLevels(root: TreeNode | null): number[] {
-    
-};
+  const result = [];
+  const queue = [root];
+  while (queue.length) {
+    const length = queue.length;
+    let sum = 0;
+    for (let i = 0; i < length; i++) {
+      const node = queue.shift();
+      sum += node.val;
+      node.left && queue.push(node.left);
+      node.right && queue.push(node.right);
+    }
+
+    result.push(sum / length);
+  }
+  return result;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -37,4 +49,3 @@ function averageOfLevels(root: TreeNode | null): number[] {
 // @lcpr case=end
 
  */
-
