@@ -23,11 +23,24 @@
  */
 
 function connect(root: _Node | null): _Node | null {
-    
-};
+  if (!root) return null;
+  const queue = [root];
+  while (queue.length) {
+    const length = queue.length;
+    for (let i = 0; i < length; i++) {
+      const node = queue.shift();
+      if (i === length - 1) {
+        node.next = null;
+      } else {
+        node.next = queue[0];
+      }
+      node.left && queue.push(node.left);
+      node.right && queue.push(node.right);
+    }
+  }
+  return root;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -39,4 +52,3 @@ function connect(root: _Node | null): _Node | null {
 // @lcpr case=end
 
  */
-
