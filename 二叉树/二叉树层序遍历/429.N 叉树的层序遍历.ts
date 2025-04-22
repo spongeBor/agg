@@ -11,7 +11,7 @@
  * class _Node {
  *     val: number
  *     children: _Node[]
- *     
+ *
  *     constructor(v: number) {
  *         this.val = v;
  *         this.children = [];
@@ -19,13 +19,25 @@
  * }
  */
 
-
 function levelOrder(root: _Node | null): number[][] {
-	
-};
+  const result = [];
+  if (!root) return result;
+  const queue = [root];
+  while (queue.length) {
+    const size = queue.length;
+    const arr = [];
+    for (let i = 0; i < size; i++) {
+      const node = queue.shift();
+      arr.push(node.val);
+      for (let j = 0; j < node.children.length; j++) {
+        queue.push(node.children[j]);
+      }
+    }
+    result.push(arr);
+  }
+  return result;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -37,4 +49,3 @@ function levelOrder(root: _Node | null): number[][] {
 // @lcpr case=end
 
  */
-
