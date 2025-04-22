@@ -11,7 +11,6 @@
  * @returns 排序后的数组
  */
 export function mergeSort<T>(arr: T[]): T[] {
-  // TODO: 实现归并排序算法
   if (arr.length <= 1) return arr;
 
   const middle = Math.floor(arr.length / 2);
