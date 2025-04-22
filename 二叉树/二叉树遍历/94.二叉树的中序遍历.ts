@@ -34,6 +34,11 @@ function inorderTraversalRecursive(root: TreeNode | null): number[] {
   traverse(root);
   return result;
 }
+
+function inorderTraversalIterative(root: TreeNode | null): number[] {
+  const result: number[] = [];
+  // TODO:
+}
 // @lc code=end
 
 /*

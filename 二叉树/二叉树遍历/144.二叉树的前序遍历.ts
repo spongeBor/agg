@@ -21,7 +21,8 @@
  */
 
 function preorderTraversal(root: TreeNode | null): number[] {
-  return preorderTraversalRecursive(root);
+  // return preorderTraversalRecursive(root);
+  return preorderTraversalIterative(root);
 }
 
 function preorderTraversalRecursive(root: TreeNode | null): number[] {
@@ -36,6 +37,21 @@ function preorderTraversalRecursive(root: TreeNode | null): number[] {
   return result;
 }
 
+function preorderTraversalIterative(root: TreeNode | null): number[] {
+  const result: number[] = [];
+  if (!root) return result;
+
+  const stk: (TreeNode | null)[] = [];
+  stk.push(root);
+
+  while (stk.length) {
+    const node = stk.pop();
+    result.push(node.val);
+    if (node.right) stk.push(node.right);
+    if (node.left) stk.push(node.left);
+  }
+  return result;
+}
 // @lc code=end
 
 /*
