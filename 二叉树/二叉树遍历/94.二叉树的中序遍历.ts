@@ -21,7 +21,8 @@
  */
 
 function inorderTraversal(root: TreeNode | null): number[] {
-  return inorderTraversalRecursive(root);
+  //   return inorderTraversalRecursive(root);
+  return inorderTraversalIterative(root);
 }
 function inorderTraversalRecursive(root: TreeNode | null): number[] {
   const result: number[] = [];
@@ -37,7 +38,19 @@ function inorderTraversalRecursive(root: TreeNode | null): number[] {
 
 function inorderTraversalIterative(root: TreeNode | null): number[] {
   const result: number[] = [];
-  // TODO:
+  const stk = [];
+  let cur = root;
+  while (cur || stk.length) {
+    if (cur) {
+      stk.push(cur);
+      cur = cur.left;
+    } else {
+      cur = stk.pop();
+      result.push(cur.val);
+      cur = cur.right;
+    }
+  }
+  return result;
 }
 // @lc code=end
 
