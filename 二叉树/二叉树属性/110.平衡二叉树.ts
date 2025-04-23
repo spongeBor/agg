@@ -19,13 +19,14 @@
  *     }
  * }
  */
+/**
+ * 二叉树节点的深度：指从根节点到该节点的最长简单路径边的条数。
+ * 二叉树节点的高度：指从该节点到叶子节点的最长简单路径边的条数。
+ * @param root
+ */
+function isBalanced(root: TreeNode | null): boolean {}
 
-function isBalanced(root: TreeNode | null): boolean {
-    
-};
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -41,4 +42,3 @@ function isBalanced(root: TreeNode | null): boolean {
 // @lcpr case=end
 
  */
-

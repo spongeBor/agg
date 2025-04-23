@@ -21,6 +21,11 @@
  */
 
 function maxDepth(root: TreeNode | null): number {
+  //   return maxDepthCommon(root);
+  return maxDepthinorder(root);
+}
+
+function maxDepthCommon(root: TreeNode | null): number {
   if (!root) return 0;
   const queue = [root];
   let depth = 0;
@@ -35,6 +40,29 @@ function maxDepth(root: TreeNode | null): number {
   }
   return depth;
 }
+
+function maxDepthinorder(root: TreeNode | null): number {
+  function getDepth(node: TreeNode, depth: number) {
+    result = depth > result ? depth : result;
+    if (!node.left && !node.right) return;
+    if (node.left) {
+      depth++;
+      getDepth(node.left, depth);
+      depth--;
+    }
+    if (node.right) {
+      depth++;
+      getDepth(node.right, depth);
+      depth--;
+    }
+    return result;
+  }
+  let result = 0;
+  if (!root) return result;
+  getDepth(root, 1);
+  return result;
+}
+
 // @lc code=end
 
 /*
