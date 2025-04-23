@@ -1,3 +1,4 @@
+export default {};
 /*
  * @lc app=leetcode.cn id=349 lang=typescript
  *

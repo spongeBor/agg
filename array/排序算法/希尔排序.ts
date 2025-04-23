@@ -1,3 +1,4 @@
+export default {};
 /**
  * 希尔排序
  * 时间复杂度: O(n log n) ~ O(n²)，取决于间隔序列

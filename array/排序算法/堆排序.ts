@@ -1,3 +1,4 @@
+export default {};
 /**
  * 堆排序
  * 时间复杂度: O(n log n)

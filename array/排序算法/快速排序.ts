@@ -1,3 +1,4 @@
+export default {};
 /**
  * 快速排序
  * 时间复杂度: 平均 O(n log n)，最坏 O(n²)

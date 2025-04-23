@@ -46,7 +46,9 @@
     "paths": {
       "*": ["*"]
     },
-    "checkJs": false
+    "checkJs": false,
+    "noEmit": true,
+    "ignoreDeprecations": "5.0"
   },
   "include": ["./**/*.ts"],
   "exclude": ["node_modules", "dist"]
