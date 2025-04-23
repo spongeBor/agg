@@ -21,11 +21,30 @@
  */
 
 function invertTree(root: TreeNode | null): TreeNode | null {
-    
-};
+  // return invertTreeRecursive(root);
+  return invertTreeIterative(root);
+}
+
+function invertTreeRecursive(root: TreeNode | null): TreeNode | null {
+  if (root === null) return null;
+  [root.left, root.right] = [root.right, root.left];
+  invertTreeRecursive(root.left);
+  invertTreeRecursive(root.right);
+  return root;
+}
+
+function invertTreeIterative(root: TreeNode | null): TreeNode | null {
+  if (root === null) return null;
+  const queue: TreeNode[] = [root];
+  while (queue.length > 0) {
+    const node = queue.shift();
+    [node.left, node.right] = [node.right, node.left];
+    if (node.left) queue.push(node.left);
+    if (node.right) queue.push(node.right);
+  }
+  return root;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -41,4 +60,3 @@ function invertTree(root: TreeNode | null): TreeNode | null {
 // @lcpr case=end
 
  */
-
