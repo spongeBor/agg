@@ -1,0 +1,22 @@
+{
+  "name": "code_for_work",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "15.5.1"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "bash ./add_export_default.sh --file"
+    ]
+  }
+}

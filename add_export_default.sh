@@ -1,7 +1,15 @@
 #!/bin/bash
 
-# 遍历所有的.ts文件，但排除.d.ts文件
-find . -name "*.ts" | grep -v "\.d\.ts$" | while read file; do
+# 检查是否提供了--file参数
+if [[ "$1" == "--file" ]]; then
+  # 参数模式：处理从lint-staged传入的单个文件
+  file="$2"
+  # 跳过.d.ts文件
+  if [[ $file == *.d.ts ]]; then
+    echo "跳过 .d.ts 文件: $file"
+    exit 0
+  fi
+  
   # 检查文件是否已经包含export default {}
   if ! grep -q "export default {}" "$file"; then
     # 将export default {}添加到文件的开头
@@ -13,4 +21,19 @@ find . -name "*.ts" | grep -v "\.d\.ts$" | while read file; do
   else
     echo "文件已有 export default {}: $file"
   fi
-done 
+else
+  # 原始模式：遍历所有.ts文件
+  find . -name "*.ts" | grep -v "\.d\.ts$" | while read file; do
+    # 检查文件是否已经包含export default {}
+    if ! grep -q "export default {}" "$file"; then
+      # 将export default {}添加到文件的开头
+      temp_file=$(mktemp)
+      echo "export default {};" > "$temp_file"
+      cat "$file" >> "$temp_file"
+      mv "$temp_file" "$file"
+      echo "已添加 export default {} 到文件: $file"
+    else
+      echo "文件已有 export default {}: $file"
+    fi
+  done 
+fi 

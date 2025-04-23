@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# 使用lint-staged只对当前提交新增的ts文件运行脚本
+npx lint-staged
