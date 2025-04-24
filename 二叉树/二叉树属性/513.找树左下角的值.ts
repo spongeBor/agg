@@ -22,11 +22,44 @@ export default {};
  */
 
 function findBottomLeftValue(root: TreeNode | null): number {
-    
-};
+  // return recursive(root);
+  return iterative(root);
+}
+
+function recursive(root: TreeNode | null): number {
+  if (root === null) return 0;
+  let maxDepth = -1;
+  let result = 0;
+  const traverse = (node: TreeNode | null, depth: number) => {
+    if (node === null) return;
+    if (depth > maxDepth) {
+      maxDepth = depth;
+      result = node.val;
+    }
+    traverse(node.left, depth + 1);
+    traverse(node.right, depth + 1);
+  };
+  traverse(root, 0);
+  return result;
+}
+
+function iterative(root: TreeNode | null): number {
+  let result = 0;
+  if (!root) return result;
+  const queue = [root];
+  while (queue.length) {
+    const size = queue.length;
+    for (let i = 0; i < size; i++) {
+      const node = queue.shift();
+      if (i === 0) result = node.val;
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+  }
+  return result;
+}
+
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -38,4 +71,3 @@ function findBottomLeftValue(root: TreeNode | null): number {
 // @lcpr case=end
 
  */
-
