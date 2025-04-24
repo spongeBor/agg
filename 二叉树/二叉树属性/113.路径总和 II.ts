@@ -1,3 +1,4 @@
+export default {};
 /*
  * @lc app=leetcode.cn id=113 lang=typescript
  * @lcpr version=30200
@@ -20,12 +21,8 @@
  * }
  */
 
-function pathSum(root: TreeNode | null, targetSum: number): number[][] {
-    
-};
+function pathSum(root: TreeNode | null, targetSum: number): number[][] {}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -41,4 +38,3 @@ function pathSum(root: TreeNode | null, targetSum: number): number[][] {
 // @lcpr case=end
 
  */
-
