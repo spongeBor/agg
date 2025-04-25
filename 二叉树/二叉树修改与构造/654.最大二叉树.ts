@@ -22,11 +22,12 @@ export default {};
  */
 
 function constructMaximumBinaryTree(nums: number[]): TreeNode | null {
-    
-};
+  // 最大二叉树定义
+  // 1. 根节点是数组中最大的数
+  // 2. 左子树是通过数组中最大值左边部分构造出的最大二叉树。
+  // 3. 右子树是通过数组中最大值右边部分构造出的最大二叉树。
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -38,4 +39,3 @@ function constructMaximumBinaryTree(nums: number[]): TreeNode | null {
 // @lcpr case=end
 
  */
-
