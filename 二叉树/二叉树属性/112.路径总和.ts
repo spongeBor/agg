@@ -55,6 +55,7 @@ function recursiveSample(root: TreeNode | null, targetSum: number): boolean {
 
 function iterative(root: TreeNode | null, targetSum: number): boolean {
   // TODO:
+  return false;
 }
 // @lc code=end
 
