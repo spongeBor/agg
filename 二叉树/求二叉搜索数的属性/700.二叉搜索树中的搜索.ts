@@ -22,11 +22,26 @@ export default {};
  */
 
 function searchBST(root: TreeNode | null, val: number): TreeNode | null {
-    
-};
+  // return recursiveSearch(root, val);
+  return iterativeSearch(root, val);
+}
+
+function recursiveSearch(root: TreeNode | null, val: number): TreeNode | null {
+  if (!root) return null;
+  if (root.val === val) return root;
+  if (root.val > val) return recursiveSearch(root.left, val);
+  return recursiveSearch(root.right, val);
+}
+
+function iterativeSearch(root: TreeNode | null, val: number): TreeNode | null {
+  while (root) {
+    if (root.val === val) return root;
+    if (root.val > val) root = root.left;
+    else root = root.right;
+  }
+  return null;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -38,4 +53,3 @@ function searchBST(root: TreeNode | null, val: number): TreeNode | null {
 // @lcpr case=end
 
  */
-
