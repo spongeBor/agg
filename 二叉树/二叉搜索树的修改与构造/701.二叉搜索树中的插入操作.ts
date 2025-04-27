@@ -22,11 +22,52 @@ export default {};
  */
 
 function insertIntoBST(root: TreeNode | null, val: number): TreeNode | null {
-    
-};
+  // return recursiveInsertIntoBST(root, val);
+  return iterativeInsertIntoBST(root, val);
+}
+
+function recursiveInsertIntoBST(
+  root: TreeNode | null,
+  val: number
+): TreeNode | null {
+  if (root === null) {
+    return new TreeNode(val);
+  }
+  if (root.val > val) {
+    root.left = recursiveInsertIntoBST(root.left, val);
+  } else {
+    root.right = recursiveInsertIntoBST(root.right, val);
+  }
+  return root;
+}
+
+function iterativeInsertIntoBST(
+  root: TreeNode | null,
+  val: number
+): TreeNode | null {
+  if (root === null) {
+    return new TreeNode(val);
+  }
+  let current = root;
+  while (true) {
+    if (current.val > val) {
+      if (current.left === null) {
+        current.left = new TreeNode(val);
+        break;
+      }
+      current = current.left;
+    } else {
+      if (current.right === null) {
+        current.right = new TreeNode(val);
+        break;
+      }
+      current = current.right;
+    }
+  }
+  return root;
+}
+
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -42,4 +83,3 @@ function insertIntoBST(root: TreeNode | null, val: number): TreeNode | null {
 // @lcpr case=end
 
  */
-
