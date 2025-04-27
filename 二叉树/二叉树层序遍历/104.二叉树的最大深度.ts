@@ -23,7 +23,8 @@ export default {};
 
 function maxDepth(root: TreeNode | null): number {
   //   return maxDepthCommon(root);
-  return maxDepthinorder(root);
+  // return maxDepthinorder(root);
+  return maxDepthSimple(root);
 }
 
 function maxDepthCommon(root: TreeNode | null): number {
@@ -77,6 +78,19 @@ function maxDepthinorder(root: TreeNode | null): number {
   // 从根节点开始递归，初始深度为1
   getDepth(root, 1);
   // 返回计算得到的最大深度
+  return result;
+}
+
+function maxDepthSimple(root: TreeNode | null): number {
+  function getDepth(node: TreeNode, depth: number) {
+    result = Math.max(depth, result);
+    if (!node.left && !node.right) return;
+    node.left && getDepth(node.left, depth + 1);
+    node.right && getDepth(node.right, depth + 1);
+  }
+  let result = 0;
+  if (!root) return result;
+  getDepth(root, 1);
   return result;
 }
 
