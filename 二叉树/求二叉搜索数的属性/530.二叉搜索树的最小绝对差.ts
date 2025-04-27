@@ -22,11 +22,47 @@ export default {};
  */
 
 function getMinimumDifference(root: TreeNode | null): number {
-    
-};
+  // return recursive(root);
+  return iterative(root);
+}
+
+function recursive(root: TreeNode | null) {
+  let min = Infinity;
+  let pre = null;
+  const traverse = (root: TreeNode | null) => {
+    if (!root) return;
+    traverse(root.left);
+    if (pre !== null) {
+      min = Math.min(min, root.val - pre.val);
+    }
+    pre = root;
+    traverse(root.right);
+  };
+  traverse(root);
+  return min;
+}
+
+function iterative(root: TreeNode | null) {
+  let min = Infinity;
+  let pre = null;
+  const stk = [];
+  let cur = root;
+  while (cur || stk.length) {
+    if (cur) {
+      stk.push(cur);
+      cur = cur.left;
+    } else {
+      cur = stk.pop();
+      if (pre !== null) {
+        min = Math.min(min, cur.val - pre.val);
+      }
+      pre = cur;
+      cur = cur.right;
+    }
+  }
+  return min;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -38,4 +74,3 @@ function getMinimumDifference(root: TreeNode | null): number {
 // @lcpr case=end
 
  */
-
