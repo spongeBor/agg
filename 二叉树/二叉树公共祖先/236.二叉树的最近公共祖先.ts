@@ -21,12 +21,18 @@ export default {};
  * }
  */
 
-function lowestCommonAncestor(root: TreeNode | null, p: TreeNode | null, q: TreeNode | null): TreeNode | null {
-	
-};
+function lowestCommonAncestor(
+  root: TreeNode | null,
+  p: TreeNode | null,
+  q: TreeNode | null
+): TreeNode | null {
+  if (root === p || root === q || !root) return root;
+  const left = lowestCommonAncestor(root.left, p, q);
+  const right = lowestCommonAncestor(root.right, p, q);
+  if (left && right) return root;
+  return left || right;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -42,4 +48,3 @@ function lowestCommonAncestor(root: TreeNode | null, p: TreeNode | null, q: Tree
 // @lcpr case=end
 
  */
-
