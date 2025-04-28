@@ -22,11 +22,43 @@ export default {};
  */
 
 function convertBST(root: TreeNode | null): TreeNode | null {
-    
-};
+  // return reverseInorder(root);
+  return iterative(root);
+}
+
+function reverseInorder(root: TreeNode | null) {
+  // 反中序遍历
+  let pre = 0;
+  const traversal = (root: TreeNode | null) => {
+    if (!root) return;
+    traversal(root.right);
+    root.val += pre;
+    pre = root.val;
+    traversal(root.left);
+  };
+  traversal(root);
+  return root;
+}
+
+function iterative(root: TreeNode | null) {
+  // 迭代法
+  let pre = 0;
+  const stack = [];
+  let cur = root;
+  while (cur || stack.length) {
+    if (cur) {
+      stack.push(cur);
+      cur = cur.right;
+    } else {
+      cur = stack.pop();
+      cur.val += pre;
+      pre = cur.val;
+      cur = cur.left;
+    }
+  }
+  return root;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -46,4 +78,3 @@ function convertBST(root: TreeNode | null): TreeNode | null {
 // @lcpr case=end
 
  */
-
