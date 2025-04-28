@@ -22,11 +22,33 @@ export default {};
  */
 
 function deleteNode(root: TreeNode | null, key: number): TreeNode | null {
-    
-};
+  if (!root) return root; // 情况一：没找到删除的节点
+  if (root.val === key) {
+    if (root.left === null && root.right === null) {
+      return null; // 情况二：删除的节点是叶子节点
+    } else if (root.left === null) {
+      return root.right; // 情况三：删除的节点只有右子树
+    } else if (root.right === null) {
+      return root.left; // 情况四：删除的节点只有左子树
+    } else {
+      // 情况五：左右孩子节点都不为空，则将删除节点的左子树头结点（左孩子）放到删除节点的右子树的最左面节点的左孩子上，返回删除节点右孩子为新的根节点。
+      let cur = root.right;
+      while (cur.left) {
+        cur = cur.left;
+      }
+
+      cur.left = root.left;
+      return root.right;
+    }
+  }
+  if (root.val > key) {
+    root.left = deleteNode(root.left, key);
+  } else {
+    root.right = deleteNode(root.right, key);
+  }
+  return root;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -42,4 +64,3 @@ function deleteNode(root: TreeNode | null, key: number): TreeNode | null {
 // @lcpr case=end
 
  */
-
