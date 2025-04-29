@@ -8,11 +8,25 @@ export default {};
 
 // @lc code=start
 function combinationSum3(k: number, n: number): number[][] {
-    
-};
+  const result: number[][] = [];
+  const path: number[] = [];
+  const dfs = (start: number) => {
+    if (path.length === k) {
+      if (path.reduce((a, b) => a + b, 0) === n) {
+        result.push([...path]);
+      }
+      return;
+    }
+    for (let i = start; i <= 9; i++) {
+      path.push(i);
+      dfs(i + 1);
+      path.pop();
+    }
+  };
+  dfs(1);
+  return result;
+}
 // @lc code=end
-
-
 
 /*
 // @lcpr case=start
@@ -28,4 +42,3 @@ function combinationSum3(k: number, n: number): number[][] {
 // @lcpr case=end
 
  */
-
