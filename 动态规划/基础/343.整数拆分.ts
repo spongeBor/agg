@@ -25,7 +25,8 @@ function integerBreak(n: number): number {
   dp[1] = 0;
   dp[2] = 1;
   for (let i = 3; i <= n; i++) {
-    for (let j = 1; j < i; j++) {
+    // 从1到i/2，因为j和i-j是对称的，所以只需要考虑一半
+    for (let j = 1; j <= i / 2; j++) {
       // dp[i]：当前已知的最大乘积
       // (i-j)*j：将i拆分为j和(i-j)，且(i-j)不再拆分的乘积
       // dp[i-j]*j：将i拆分为j和(i-j)，且(i-j)继续拆分的乘积，这里dp[i-j]表示将(i-j)拆分后的最大乘积
