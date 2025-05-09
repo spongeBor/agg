@@ -323,6 +323,127 @@ export default {};
 };
 
 /**
+ * 模拟实现数组的fill方法
+ *
+ * 规范来源: ECMAScript 262 规范 22.1.3.6
+ *
+ * 规范步骤:
+ * 1. 如果this值为null或undefined，抛出TypeError异常
+ * 2. 将this值转换为Object
+ * 3. 获取对象的length属性并转换为无符号32位整数
+ * 4. 处理起始索引start，默认为0
+ * 5. 处理结束索引end，默认为数组长度
+ * 6. 如果索引为负，从数组末尾计算实际位置
+ * 7. 遍历指定区间内的每个索引，设置元素为value
+ * 8. 返回修改后的数组对象
+ *
+ * @param value 用来填充数组的值
+ * @param start 开始索引，默认为0
+ * @param end 结束索引（不包含），默认为数组长度
+ * @returns 返回修改后的数组
+ */
+(<any>Array.prototype).myFill = function (
+  value: any,
+  start: number = 0,
+  end: number = this.length
+) {
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+  const O = Object(this);
+  const len = O.length >>> 0;
+  for (let k = start; k < end; k++) {
+    if (k in O) {
+      O[k] = value;
+    }
+  }
+  return O;
+};
+
+/**
+ * 模拟实现数组的flat方法
+ *
+ * 规范来源: ECMAScript 262 规范 22.1.3.10
+ *
+ * 规范步骤:
+ * 1. 如果this值为null或undefined，抛出TypeError异常
+ * 2. 将this值转换为Object
+ * 3. 获取对象的length属性并转换为无符号32位整数
+ * 4. 处理深度参数depth，默认为1
+ * 5. 创建新的空数组result
+ * 6. 遍历原数组，对于每个元素：
+ *    a. 如果是数组且depth>0，递归调用flat(depth-1)并将结果添加到新数组
+ *    b. 如果是数组且depth=0或不是数组，直接添加到新数组
+ * 7. 返回新的扁平化数组
+ *
+ * @param depth 指定嵌套数组的结构深度，默认为1
+ * @returns 返回一个新数组，其中所有子数组元素都被递归地展开
+ */
+(<any>Array.prototype).myFlat = function (depth: number = 1) {
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+  const O = Object(this);
+  const len = O.length >>> 0;
+  const result: any[] = [];
+  for (let k = 0; k < len; k++) {
+    if (k in O) {
+      if (Array.isArray(O[k])) {
+        if (depth > 1) {
+          result.push(...O[k].myFlat(depth - 1));
+        } else {
+          result.push(...O[k]);
+        }
+      } else {
+        result.push(O[k]);
+      }
+    }
+  }
+  return result;
+};
+
+/**
+ * 模拟实现数组的splice方法
+ *
+ * 规范来源: ECMAScript 262 规范 22.1.3.27
+ *
+ * 规范步骤:
+ * 1. 如果this值为null或undefined，抛出TypeError异常
+ * 2. 将this值转换为Object
+ * 3. 获取对象的length属性并转换为无符号32位整数
+ * 4. 处理起始索引start，如果为负则从末尾计算
+ * 5. 处理删除计数deleteCount，确保在有效范围内
+ * 6. 创建新数组保存被删除的元素
+ * 7. 计算需要移动的元素数量并进行移动
+ * 8. 在指定位置插入新元素
+ * 9. 更新数组长度
+ * 10. 返回包含被删除元素的数组
+ *
+ * @param start 指定修改的开始位置
+ * @param deleteCount 表示要移除的数组元素的个数
+ * @param items 要添加进数组的元素，从start位置开始
+ * @returns 返回由被删除元素组成的数组
+ */
+(<any>Array.prototype).mySplice = function (
+  start: number,
+  deleteCount: number,
+  ...items: any[]
+) {
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+  const O = Object(this);
+  const len = O.length >>> 0;
+  const result: any[] = [];
+  for (let k = 0; k < len; k++) {
+    if (k in O) {
+      result.push(O[k]);
+    }
+  }
+  return result;
+};
+
+/**
  * 模拟实现数组的join方法
  *
  * 规范来源: ECMAScript 262 规范 22.1.3.15
