@@ -19,7 +19,10 @@ export default {};
  * @param thisArg 可选参数，执行callback时的this值
  * @returns 返回一个新数组，每个元素都是回调函数的返回值
  */
-(<any>Array.prototype).myMap = function (callback, thisArg) {
+(<any>Array.prototype).myMap = function <T, U>(
+  callback: (value: T, index: number, array: T[]) => U,
+  thisArg?: any
+): U[] {
   // 检查this是否为null或undefined，因为根据规范，如果调用者为null或undefined应该抛出TypeError
   if (this == null) {
     throw new TypeError("this is null or not defined");
@@ -75,7 +78,10 @@ export default {};
  * @param thisArg 可选参数，执行callback时的this值
  * @returns undefined
  */
-(<any>Array.prototype).myForEach = function (callback, thisArg) {
+(<any>Array.prototype).myForEach = function <T>(
+  callback: (value: T, index: number, array: T[]) => void,
+  thisArg?: any
+): void {
   if (this == null) {
     throw new TypeError("this is null or not defined");
   }
@@ -110,7 +116,10 @@ export default {};
  * @param thisArg 可选参数，执行callback时的this值
  * @returns 如果callback对任一元素返回真值则返回true，否则返回false
  */
-(<any>Array.prototype).mySome = function (callback, thisArg) {
+(<any>Array.prototype).mySome = function <T>(
+  callback: (value: T, index: number, array: T[]) => boolean,
+  thisArg?: any
+): boolean {
   if (this == null) {
     throw new TypeError("this is null or not defined");
   }
@@ -145,7 +154,10 @@ export default {};
  * @param thisArg 可选参数，执行callback时的this值
  * @returns 如果callback对所有元素都返回真值则返回true，否则返回false
  */
-(<any>Array.prototype).myEvery = function (callback, thisArg) {
+(<any>Array.prototype).myEvery = function <T>(
+  callback: (value: T, index: number, array: T[]) => boolean,
+  thisArg?: any
+): boolean {
   if (this == null) {
     throw new TypeError("this is null or not defined");
   }
@@ -180,7 +192,10 @@ export default {};
  * @param thisArg 可选参数，执行callback时的this值
  * @returns 返回第一个满足条件的元素，如果没有则返回undefined
  */
-(<any>Array.prototype).myFind = function (callback, thisArg) {
+(<any>Array.prototype).myFind = function <T>(
+  callback: (value: T, index: number, array: T[]) => boolean,
+  thisArg?: any
+): T | undefined {
   if (this == null) {
     throw new TypeError("this is null or not defined");
   }
@@ -215,7 +230,10 @@ export default {};
  * @param thisArg 可选参数，执行callback时的this值
  * @returns 返回第一个满足条件的元素的索引，如果没有则返回-1
  */
-(<any>Array.prototype).myFindIndex = function (callback, thisArg) {
+(<any>Array.prototype).myFindIndex = function <T>(
+  callback: (value: T, index: number, array: T[]) => boolean,
+  thisArg?: any
+): number {
   if (this == null) {
     throw new TypeError("this is null or not defined");
   }
@@ -251,7 +269,10 @@ export default {};
  * @param fromIndex 开始搜索的索引，默认为0
  * @returns 如果找到指定元素则返回true，否则返回false
  */
-(<any>Array.prototype).myIncludes = function (searchElement, fromIndex = 0) {
+(<any>Array.prototype).myIncludes = function <T>(
+  searchElement: T,
+  fromIndex: number = 0
+): boolean {
   if (this == null) {
     throw new TypeError("this is null or not defined");
   }
@@ -284,7 +305,10 @@ export default {};
  * @param fromIndex 开始搜索的索引，默认为0
  * @returns 返回指定元素在数组中的第一个索引，如果不存在则返回-1
  */
-(<any>Array.prototype).myIndexOf = function (searchElement, fromIndex = 0) {
+(<any>Array.prototype).myIndexOf = function <T>(
+  searchElement: T,
+  fromIndex: number = 0
+): number {
   if (this == null) {
     throw new TypeError("this is null or not defined");
   }
@@ -316,7 +340,7 @@ export default {};
  * @param separator 指定用于分隔数组元素的字符串，默认为逗号(',')
  * @returns 返回所有数组元素连接的字符串
  */
-(<any>Array.prototype).myJoin = function (separator = ",") {
+(<any>Array.prototype).myJoin = function <T>(separator: string = ","): string {
   if (this == null) {
     throw new TypeError("this is null or not defined");
   }
@@ -364,7 +388,10 @@ export default {};
  * @param thisArg 可选参数，执行callback时的this值
  * @returns 返回一个新数组，包含所有callback返回值为真的元素
  */
-(<any>Array.prototype).myFilter = function (callback, thisArg) {
+(<any>Array.prototype).myFilter = function <T>(
+  callback: (value: T, index: number, array: T[]) => boolean,
+  thisArg?: any
+): T[] {
   if (this == null) {
     throw new TypeError("this is null or not defined");
   }
@@ -373,7 +400,7 @@ export default {};
   }
   const O = Object(this);
   const len = O.length >>> 0;
-  const A = [];
+  const A: T[] = [];
   for (let k = 0; k < len; k++) {
     if (k in O && callback.call(thisArg, O[k], k, O)) {
       A.push(O[k]);
@@ -401,7 +428,15 @@ export default {};
  * @param initialValue 可选参数，作为归约的初始值
  * @returns 返回最终的归约结果
  */
-(<any>Array.prototype).myReduce = function (callback, initialValue) {
+(<any>Array.prototype).myReduce = function <T, U>(
+  callback: (
+    accumulator: U,
+    currentValue: T,
+    currentIndex: number,
+    array: T[]
+  ) => U,
+  initialValue?: U
+): U {
   // 检查this是否为null或undefined
   if (this == null) {
     throw new TypeError("this is null or not defined");
@@ -420,7 +455,7 @@ export default {};
 
   // 初始化索引和累加器
   let k = 0;
-  let accumulator = initialValue;
+  let accumulator: any = initialValue;
 
   // 如果没有提供初始值
   if (accumulator === undefined) {
@@ -472,7 +507,15 @@ export default {};
  * @param initialValue 可选参数，作为归约的初始值
  * @returns 返回最终的归约结果
  */
-(<any>Array.prototype).myReduceRight = function (callback, initialValue) {
+(<any>Array.prototype).myReduceRight = function <T, U>(
+  callback: (
+    accumulator: U,
+    currentValue: T,
+    currentIndex: number,
+    array: T[]
+  ) => U,
+  initialValue?: U
+): U {
   if (this == null) {
     throw new TypeError("this is null or not defined");
   }
@@ -482,7 +525,7 @@ export default {};
   const O = Object(this);
   const len = O.length >>> 0;
   let k = len - 1;
-  let accumulator = initialValue;
+  let accumulator: any = initialValue;
   if (accumulator === undefined) {
     while (k >= 0 && !(k in O)) {
       k--;
