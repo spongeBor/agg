@@ -46,30 +46,82 @@ function bag01(weight: number[], value: number[], bagSize: number) {
     }
   }
 
-  // 测试代码
-  console.log("DP表格:");
-  for (let i = 0; i <= weight.length; i++) {
-    console.log(dp[i]);
-  }
-
-  // 输出选择的物品
-  let i = weight.length;
-  let j = bagSize;
-  let selectedItems = [];
-  while (i > 0 && j > 0) {
-    if (dp[i][j] !== dp[i - 1][j]) {
-      selectedItems.push(i - 1);
-      j -= weight[i - 1];
-    }
-    i--;
-  }
-  console.log("选择的物品索引:", selectedItems.reverse());
-
-  return dp[weight.length][bagSize];
+  // 返回结果
+  return {
+    maxValue: dp[weight.length][bagSize],
+    dpTable: dp,
+    getSelectedItems: function () {
+      let i = weight.length;
+      let j = bagSize;
+      let selectedItems = [];
+      while (i > 0 && j > 0) {
+        if (dp[i][j] !== dp[i - 1][j]) {
+          selectedItems.push(i - 1);
+          j -= weight[i - 1];
+        }
+        i--;
+      }
+      return selectedItems.reverse();
+    },
+  };
 }
 
-// 测试用例
-const weights = [1, 3, 4];
-const values = [15, 20, 30];
-const bagSize = 4;
-console.log("最大价值:", bag01(weights, values, bagSize)); // 结果是35，选择了物品0（价值15，重量1）和物品1（价值20，重量3），总重量为4，总价值为35
+/**
+ * 0-1背包问题的一维动态规划解法
+ *
+ * 原理解释：
+ * 1. 一维数组dp[j]表示容量为j的背包能够装下的最大价值
+ * 2. 这是对二维DP的空间优化，将dp[i][j]压缩为dp[j]
+ * 3. 关键点在于遍历顺序：必须从后向前遍历背包容量
+ *    - 如果从前向后遍历，会导致物品被重复使用（变成完全背包问题）
+ *    - 从后向前确保每个物品只被考虑一次
+ * 4. 状态转移方程：dp[j] = max(dp[j], dp[j-weight[i]] + value[i])
+ *    - dp[j]：不选择当前物品i时的最大价值
+ *    - dp[j-weight[i]] + value[i]：选择当前物品i时的最大价值
+ * 5. 初始化dp数组全为0，表示背包容量为j时，不放入任何物品的价值
+ *
+ * 与二维方法相比，空间复杂度从O(n*m)降低到O(m)，其中n是物品数量，m是背包容量
+ */
+function bag01_2(weight: number[], value: number[], bagSize: number) {
+  // 创建一维dp数组，表示不同容量背包的最大价值
+  let dp = new Array(bagSize + 1).fill(0);
+
+  // 遍历每个物品
+  for (let i = 0; i < weight.length; i++) {
+    // 从后向前遍历背包容量，确保每个物品只被使用一次
+    for (let j = bagSize; j >= weight[i]; j--) {
+      // 状态转移方程：选择不放物品i或放物品i的最大值
+      dp[j] = Math.max(dp[j], dp[j - weight[i]] + value[i]);
+    }
+  }
+
+  // 返回背包容量为bagSize时的最大价值
+  return dp[bagSize];
+}
+
+// 独立的测试函数
+function runTests() {
+  // 测试用例
+  const weights = [1, 3, 4];
+  const values = [15, 20, 30];
+  const bagSize = 4;
+
+  // 测试第一种实现方法
+  console.log("使用二维DP方法测试:");
+  const result = bag01(weights, values, bagSize);
+  console.log("最大价值:", result.maxValue);
+
+  console.log("DP表格:");
+  for (let i = 0; i <= weights.length; i++) {
+    console.log(result.dpTable[i]);
+  }
+
+  console.log("选择的物品索引:", result.getSelectedItems());
+
+  // 测试第二种实现方法
+  console.log("\n使用一维DP方法测试:");
+  console.log("最大价值:", bag01_2(weights, values, bagSize));
+}
+
+// 如果想要运行测试，取消下面一行的注释
+runTests();
