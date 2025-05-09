@@ -1,7 +1,7 @@
 export default {};
 //题目： 有n件物品和一个最多能背重量为w 的背包。第i件物品的重量是weight[i]，得到的价值是value[i] 。每件物品只能用一次，求解将哪些物品装入背包里物品价值总和最大。
 
-function bag01(weight: number[], value: number[], bagSize: number) {
+function bag01_1(weight: number[], value: number[], bagSize: number) {
   // dp[i][j] 表示前i个物品在容量为j的背包中的最大价值
   // 这是我们的状态定义，i表示考虑前i个物品，j表示背包容量为j时的最大价值
 
@@ -46,24 +46,7 @@ function bag01(weight: number[], value: number[], bagSize: number) {
     }
   }
 
-  // 返回结果
-  return {
-    maxValue: dp[weight.length][bagSize],
-    dpTable: dp,
-    getSelectedItems: function () {
-      let i = weight.length;
-      let j = bagSize;
-      let selectedItems = [];
-      while (i > 0 && j > 0) {
-        if (dp[i][j] !== dp[i - 1][j]) {
-          selectedItems.push(i - 1);
-          j -= weight[i - 1];
-        }
-        i--;
-      }
-      return selectedItems.reverse();
-    },
-  };
+  return dp[weight.length][bagSize];
 }
 
 /**
@@ -98,30 +81,46 @@ function bag01_2(weight: number[], value: number[], bagSize: number) {
   // 返回背包容量为bagSize时的最大价值
   return dp[bagSize];
 }
+// 测试用例
+function testBag01() {
+  console.log("测试0-1背包问题：");
 
-// 独立的测试函数
-function runTests() {
-  // 测试用例
-  const weights = [1, 3, 4];
-  const values = [15, 20, 30];
-  const bagSize = 4;
+  // 测试用例1：基本示例
+  const weights1 = [1, 3, 4];
+  const values1 = [15, 20, 30];
+  const bagSize1 = 4;
+  console.log("测试用例1:");
+  console.log("物品重量:", weights1);
+  console.log("物品价值:", values1);
+  console.log("背包容量:", bagSize1);
+  console.log("二维DP结果:", bag01_1(weights1, values1, bagSize1)); // 应该返回35
+  console.log("一维DP结果:", bag01_2(weights1, values1, bagSize1)); // 应该返回35
+  console.log("-------------------");
 
-  // 测试第一种实现方法
-  console.log("使用二维DP方法测试:");
-  const result = bag01(weights, values, bagSize);
-  console.log("最大价值:", result.maxValue);
+  // 测试用例2：更多物品
+  const weights2 = [2, 3, 4, 5];
+  const values2 = [3, 4, 5, 6];
+  const bagSize2 = 8;
+  console.log("测试用例2:");
+  console.log("物品重量:", weights2);
+  console.log("物品价值:", values2);
+  console.log("背包容量:", bagSize2);
+  console.log("二维DP结果:", bag01_1(weights2, values2, bagSize2)); // 应该返回10
+  console.log("一维DP结果:", bag01_2(weights2, values2, bagSize2)); // 应该返回10
+  console.log("-------------------");
 
-  console.log("DP表格:");
-  for (let i = 0; i <= weights.length; i++) {
-    console.log(result.dpTable[i]);
-  }
-
-  console.log("选择的物品索引:", result.getSelectedItems());
-
-  // 测试第二种实现方法
-  console.log("\n使用一维DP方法测试:");
-  console.log("最大价值:", bag01_2(weights, values, bagSize));
+  // 测试用例3：背包容量小于所有物品重量
+  const weights3 = [10, 20, 30];
+  const values3 = [60, 100, 120];
+  const bagSize3 = 5;
+  console.log("测试用例3:");
+  console.log("物品重量:", weights3);
+  console.log("物品价值:", values3);
+  console.log("背包容量:", bagSize3);
+  console.log("二维DP结果:", bag01_1(weights3, values3, bagSize3)); // 应该返回0
+  console.log("一维DP结果:", bag01_2(weights3, values3, bagSize3)); // 应该返回0
+  console.log("-------------------");
 }
 
-// 如果想要运行测试，取消下面一行的注释
-runTests();
+// 运行测试
+testBag01();
