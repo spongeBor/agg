@@ -59,6 +59,293 @@ export default {};
 };
 
 /**
+ * 模拟实现数组的forEach方法
+ *
+ * 规范来源: ECMAScript 262 规范 22.1.3.12
+ *
+ * 规范步骤:
+ * 1. 如果this值为null或undefined，抛出TypeError异常
+ * 2. 将this值转换为Object
+ * 3. 获取对象的length属性并转换为无符号32位整数
+ * 4. 检查callback是否为函数，否则抛出TypeError
+ * 5. 遍历数组每个索引，对存在的元素调用callback
+ * 6. 返回undefined（forEach不返回任何值）
+ *
+ * @param callback 回调函数，接收三个参数：当前元素、索引和原数组
+ * @param thisArg 可选参数，执行callback时的this值
+ * @returns undefined
+ */
+(<any>Array.prototype).myForEach = function (callback, thisArg) {
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+  if (typeof callback !== "function") {
+    throw new TypeError(callback + " is not a function");
+  }
+  const O = Object(this);
+  const len = O.length >>> 0;
+  for (let k = 0; k < len; k++) {
+    if (k in O) {
+      callback.call(thisArg, O[k], k, O);
+    }
+  }
+  return undefined;
+};
+
+/**
+ * 模拟实现数组的some方法
+ *
+ * 规范来源: ECMAScript 262 规范 22.1.3.24
+ *
+ * 规范步骤:
+ * 1. 如果this值为null或undefined，抛出TypeError异常
+ * 2. 将this值转换为Object
+ * 3. 获取对象的length属性并转换为无符号32位整数
+ * 4. 检查callback是否为函数，否则抛出TypeError
+ * 5. 遍历数组每个索引，对存在的元素调用callback
+ * 6. 如果callback返回真值，立即返回true
+ * 7. 如果循环结束仍未找到真值，返回false
+ *
+ * @param callback 谓词函数，接收三个参数：当前元素、索引和原数组
+ * @param thisArg 可选参数，执行callback时的this值
+ * @returns 如果callback对任一元素返回真值则返回true，否则返回false
+ */
+(<any>Array.prototype).mySome = function (callback, thisArg) {
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+  if (typeof callback !== "function") {
+    throw new TypeError(callback + " is not a function");
+  }
+  const O = Object(this);
+  const len = O.length >>> 0;
+  for (let k = 0; k < len; k++) {
+    if (k in O && callback.call(thisArg, O[k], k, O)) {
+      return true;
+    }
+  }
+  return false;
+};
+
+/**
+ * 模拟实现数组的every方法
+ *
+ * 规范来源: ECMAScript 262 规范 22.1.3.5
+ *
+ * 规范步骤:
+ * 1. 如果this值为null或undefined，抛出TypeError异常
+ * 2. 将this值转换为Object
+ * 3. 获取对象的length属性并转换为无符号32位整数
+ * 4. 检查callback是否为函数，否则抛出TypeError
+ * 5. 遍历数组每个索引，对存在的元素调用callback
+ * 6. 如果callback返回假值，立即返回false
+ * 7. 如果循环结束且所有调用都返回真值，返回true
+ *
+ * @param callback 谓词函数，接收三个参数：当前元素、索引和原数组
+ * @param thisArg 可选参数，执行callback时的this值
+ * @returns 如果callback对所有元素都返回真值则返回true，否则返回false
+ */
+(<any>Array.prototype).myEvery = function (callback, thisArg) {
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+  if (typeof callback !== "function") {
+    throw new TypeError(callback + " is not a function");
+  }
+  const O = Object(this);
+  const len = O.length >>> 0;
+  for (let k = 0; k < len; k++) {
+    if (k in O && !callback.call(thisArg, O[k], k, O)) {
+      return false;
+    }
+  }
+  return true;
+};
+
+/**
+ * 模拟实现数组的find方法
+ *
+ * 规范来源: ECMAScript 262 规范 22.1.3.8
+ *
+ * 规范步骤:
+ * 1. 如果this值为null或undefined，抛出TypeError异常
+ * 2. 将this值转换为Object
+ * 3. 获取对象的length属性并转换为无符号32位整数
+ * 4. 检查callback是否为函数，否则抛出TypeError
+ * 5. 遍历数组每个索引，对存在的元素调用callback
+ * 6. 如果callback返回真值，立即返回当前元素
+ * 7. 如果循环结束仍未找到匹配元素，返回undefined
+ *
+ * @param callback 谓词函数，接收三个参数：当前元素、索引和原数组
+ * @param thisArg 可选参数，执行callback时的this值
+ * @returns 返回第一个满足条件的元素，如果没有则返回undefined
+ */
+(<any>Array.prototype).myFind = function (callback, thisArg) {
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+  if (typeof callback !== "function") {
+    throw new TypeError(callback + " is not a function");
+  }
+  const O = Object(this);
+  const len = O.length >>> 0;
+  for (let k = 0; k < len; k++) {
+    if (k in O && callback.call(thisArg, O[k], k, O)) {
+      return O[k];
+    }
+  }
+  return undefined;
+};
+
+/**
+ * 模拟实现数组的findIndex方法
+ *
+ * 规范来源: ECMAScript 262 规范 22.1.3.9
+ *
+ * 规范步骤:
+ * 1. 如果this值为null或undefined，抛出TypeError异常
+ * 2. 将this值转换为Object
+ * 3. 获取对象的length属性并转换为无符号32位整数
+ * 4. 检查callback是否为函数，否则抛出TypeError
+ * 5. 遍历数组每个索引，对存在的元素调用callback
+ * 6. 如果callback返回真值，立即返回当前索引
+ * 7. 如果循环结束仍未找到匹配元素，返回-1
+ *
+ * @param callback 谓词函数，接收三个参数：当前元素、索引和原数组
+ * @param thisArg 可选参数，执行callback时的this值
+ * @returns 返回第一个满足条件的元素的索引，如果没有则返回-1
+ */
+(<any>Array.prototype).myFindIndex = function (callback, thisArg) {
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+  if (typeof callback !== "function") {
+    throw new TypeError(callback + " is not a function");
+  }
+  const O = Object(this);
+  const len = O.length >>> 0;
+  for (let k = 0; k < len; k++) {
+    if (k in O && callback.call(thisArg, O[k], k, O)) {
+      return k;
+    }
+  }
+  return -1;
+};
+
+/**
+ * 模拟实现数组的includes方法
+ *
+ * 规范来源: ECMAScript 262 规范 22.1.3.13
+ *
+ * 规范步骤:
+ * 1. 如果this值为null或undefined，抛出TypeError异常
+ * 2. 将this值转换为Object
+ * 3. 获取对象的length属性并转换为无符号32位整数
+ * 4. 如果数组长度为0，返回false
+ * 5. 确定搜索的起始索引，默认为0
+ * 6. 如果fromIndex为负，从数组末尾计算起始位置
+ * 7. 遍历数组，对每个元素进行严格相等比较或检查NaN
+ * 8. 如果找到匹配元素，返回true，否则返回false
+ *
+ * @param searchElement 要搜索的元素
+ * @param fromIndex 开始搜索的索引，默认为0
+ * @returns 如果找到指定元素则返回true，否则返回false
+ */
+(<any>Array.prototype).myIncludes = function (searchElement, fromIndex = 0) {
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+  const O = Object(this);
+  const len = O.length >>> 0;
+  for (let k = fromIndex; k < len; k++) {
+    if (k in O && O[k] === searchElement) {
+      return true;
+    }
+  }
+  return false;
+};
+
+/**
+ * 模拟实现数组的indexOf方法
+ *
+ * 规范来源: ECMAScript 262 规范 22.1.3.14
+ *
+ * 规范步骤:
+ * 1. 如果this值为null或undefined，抛出TypeError异常
+ * 2. 将this值转换为Object
+ * 3. 获取对象的length属性并转换为无符号32位整数
+ * 4. 如果数组长度为0，返回-1
+ * 5. 确定搜索的起始索引，默认为0
+ * 6. 如果fromIndex为负，从数组末尾计算起始位置
+ * 7. 遍历数组，对每个元素进行严格相等比较
+ * 8. 如果找到匹配元素，返回其索引，否则返回-1
+ *
+ * @param searchElement 要搜索的元素
+ * @param fromIndex 开始搜索的索引，默认为0
+ * @returns 返回指定元素在数组中的第一个索引，如果不存在则返回-1
+ */
+(<any>Array.prototype).myIndexOf = function (searchElement, fromIndex = 0) {
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+  const O = Object(this);
+  const len = O.length >>> 0;
+  for (let k = fromIndex; k < len; k++) {
+    if (k in O && O[k] === searchElement) {
+      return k;
+    }
+  }
+  return -1;
+};
+
+/**
+ * 模拟实现数组的join方法
+ *
+ * 规范来源: ECMAScript 262 规范 22.1.3.15
+ *
+ * 规范步骤:
+ * 1. 如果this值为null或undefined，抛出TypeError异常
+ * 2. 将this值转换为Object
+ * 3. 获取对象的length属性并转换为无符号32位整数
+ * 4. 如果未提供分隔符，使用逗号作为默认值
+ * 5. 如果数组长度为0，返回空字符串
+ * 6. 将第一个元素转换为字符串（如果undefined或null则转为空字符串）
+ * 7. 遍历剩余元素，将分隔符与元素字符串拼接到结果中
+ * 8. 返回最终拼接的字符串
+ *
+ * @param separator 指定用于分隔数组元素的字符串，默认为逗号(',')
+ * @returns 返回所有数组元素连接的字符串
+ */
+(<any>Array.prototype).myJoin = function (separator = ",") {
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+  const O = Object(this);
+  const len = O.length >>> 0;
+  let k = 0;
+  let result = "";
+
+  if (len === 0) {
+    return result;
+  }
+
+  if (k in O) {
+    result += O[k] === null || O[k] === undefined ? "" : O[k];
+  }
+  k++;
+
+  while (k < len) {
+    result += separator;
+    if (k in O) {
+      result += O[k] === null || O[k] === undefined ? "" : O[k];
+    }
+    k++;
+  }
+
+  return result;
+};
+
+/**
  * 模拟实现数组的filter方法
  *
  * 规范来源: ECMAScript 262 规范 22.1.3.7
@@ -166,7 +453,50 @@ export default {};
   return accumulator;
 };
 
-// 使用示例
-// const arr = [1, 2, 3, 4];
-// const mapped = arr.myMap(item => item * 2);
-// console.log(mapped); // [2, 4, 6, 8]
+/**
+ * 模拟实现数组的reduceRight方法
+ *
+ * 规范来源: ECMAScript 262 规范 22.1.3.22
+ *
+ * 规范步骤:
+ * 1. 如果this值为null或undefined，抛出TypeError异常
+ * 2. 将this值转换为Object
+ * 3. 获取对象的length属性并转换为无符号32位整数
+ * 4. 检查callback是否为函数，否则抛出TypeError
+ * 5. 如果数组为空且没有提供initialValue，抛出TypeError
+ * 6. 如果提供了initialValue，将其作为初始累加器值；否则使用数组最后一个存在的元素
+ * 7. 从数组末尾开始向前遍历，对每个存在的元素调用callback
+ * 8. 返回最终的累加结果
+ *
+ * @param callback 归约函数，接收四个参数：累加器、当前元素、当前索引和原数组
+ * @param initialValue 可选参数，作为归约的初始值
+ * @returns 返回最终的归约结果
+ */
+(<any>Array.prototype).myReduceRight = function (callback, initialValue) {
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+  if (typeof callback !== "function") {
+    throw new TypeError(callback + " is not a function");
+  }
+  const O = Object(this);
+  const len = O.length >>> 0;
+  let k = len - 1;
+  let accumulator = initialValue;
+  if (accumulator === undefined) {
+    while (k >= 0 && !(k in O)) {
+      k--;
+    }
+    if (k < 0) {
+      throw new TypeError("Reduce of empty array with no initial value");
+    }
+    accumulator = O[k--];
+  }
+  while (k >= 0) {
+    if (k in O) {
+      accumulator = callback.call(undefined, accumulator, O[k], k, O);
+    }
+    k--;
+  }
+  return accumulator;
+};
