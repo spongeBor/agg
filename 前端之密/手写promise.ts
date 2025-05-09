@@ -1,12 +1,71 @@
 export default {};
 /**
  * 手写Promise实现（符合Promise/A+规范）
- * Promise/A+规范：
- * 1. Promise是一个拥有then方法的对象或函数
- * 2. 一个Promise必须处于三种状态之一：pending, fulfilled, rejected
- * 3. 状态只能由pending转换为fulfilled或rejected，且状态转换后不可再变
- * 4. Promise必须有一个then方法，接收onFulfilled和onRejected两个回调函数
- * 5. then方法必须返回一个Promise对象
+ *
+ * Promise/A+规范详细说明：
+ *
+ * 1. 术语
+ *   1.1 "promise"是一个对象或函数，拥有then方法，其行为符合本规范
+ *   1.2 "thenable"是一个对象或函数，定义了then方法
+ *   1.3 "value"是任何合法的JavaScript值（包括undefined、thenable或promise）
+ *   1.4 "exception"是使用throw语句抛出的值
+ *   1.5 "reason"是表示promise为什么被rejected的值
+ *
+ * 2. Promise状态
+ *   2.1 promise必须处于以下三种状态之一：pending、fulfilled或rejected
+ *     2.1.1 处于pending状态时，promise可以转变为fulfilled或rejected状态
+ *     2.1.2 处于fulfilled状态时，promise不能转变为其他状态，必须有一个不可变的value
+ *     2.1.3 处于rejected状态时，promise不能转变为其他状态，必须有一个不可变的reason
+ *
+ * 3. then方法
+ *   3.1 promise必须提供一个then方法来访问其当前或最终的value或reason
+ *   3.2 promise的then方法接受两个参数：
+ *     promise.then(onFulfilled, onRejected)
+ *   3.3 onFulfilled和onRejected都是可选参数：
+ *     3.3.1 如果onFulfilled不是函数，它必须被忽略
+ *     3.3.2 如果onRejected不是函数，它必须被忽略
+ *   3.4 如果onFulfilled是函数：
+ *     3.4.1 当promise fulfilled后必须被调用，promise的value作为第一个参数
+ *     3.4.2 在promise fulfilled之前不能被调用
+ *     3.4.3 不能被调用多次
+ *   3.5 如果onRejected是函数：
+ *     3.5.1 当promise rejected后必须被调用，promise的reason作为第一个参数
+ *     3.5.2 在promise rejected之前不能被调用
+ *     3.5.3 不能被调用多次
+ *   3.6 onFulfilled或onRejected必须在执行上下文栈仅包含平台代码后被调用
+ *   3.7 onFulfilled和onRejected必须作为函数被调用（即没有this值）
+ *   3.8 同一个promise的then方法可以被调用多次
+ *     3.8.1 当promise fulfilled后，所有onFulfilled回调必须按照它们对then的原始调用顺序执行
+ *     3.8.2 当promise rejected后，所有onRejected回调必须按照它们对then的原始调用顺序执行
+ *   3.9 then方法必须返回一个promise
+ *     promise2 = promise1.then(onFulfilled, onRejected);
+ *     3.9.1 如果onFulfilled或onRejected返回一个值x，则运行Promise解决过程[[Resolve]](promise2, x)
+ *     3.9.2 如果onFulfilled或onRejected抛出一个异常e，则promise2必须以e为reason被rejected
+ *     3.9.3 如果onFulfilled不是函数且promise1已fulfilled，则promise2必须以promise1的value被fulfilled
+ *     3.9.4 如果onRejected不是函数且promise1已rejected，则promise2必须以promise1的reason被rejected
+ *
+ * 4. Promise解决过程
+ *   Promise解决过程是一个抽象操作，它接收一个promise和一个值x，表示为[[Resolve]](promise, x)。如果x是一个thenable，它尝试使promise采用x的状态，假定x的行为至少有点像promise。否则，它用x的值来fulfill promise。
+ *   这种thenable的特性使得Promise的实现更具有通用性：只要其暴露一个遵循Promise/A+规范的then方法，它就能与Promise/A+的实现进行互操作。
+ *
+ *   要运行[[Resolve]](promise, x)，需执行以下步骤：
+ *     4.1 如果promise和x引用同一个对象，以TypeError为reason拒绝promise
+ *     4.2 如果x是一个promise，采用其状态：
+ *       4.2.1 如果x处于pending状态，promise必须保持pending直到x被fulfilled或rejected
+ *       4.2.2 如果x处于fulfilled状态，用相同的value fulfill promise
+ *       4.2.3 如果x处于rejected状态，用相同的reason reject promise
+ *     4.3 如果x是对象或函数：
+ *       4.3.1 让then = x.then
+ *       4.3.2 如果检索属性x.then导致抛出异常e，则以e为reason reject promise
+ *       4.3.3 如果then是函数，将x作为this调用它，第一个参数为resolvePromise，第二个参数为rejectPromise，其中：
+ *         4.3.3.1 如果resolvePromise以值y被调用，运行[[Resolve]](promise, y)
+ *         4.3.3.2 如果rejectPromise以reason r被调用，用r拒绝promise
+ *         4.3.3.3 如果resolvePromise和rejectPromise都被调用，或者对同一个参数进行多次调用，则第一次调用优先，任何进一步的调用都被忽略
+ *         4.3.3.4 如果调用then抛出异常e：
+ *           4.3.3.4.1 如果resolvePromise或rejectPromise已被调用，忽略它
+ *           4.3.3.4.2 否则，以e为reason reject promise
+ *       4.3.4 如果then不是函数，以x为value fulfill promise
+ *     4.4 如果x不是对象或函数，以x为value fulfill promise
  */
 
 // 定义PromiseSettledResult接口
