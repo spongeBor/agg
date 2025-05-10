@@ -424,6 +424,68 @@ export default {};
 };
 
 /**
+ * 模拟实现数组的slice方法
+ *
+ * 规范来源: ECMAScript 262 规范 22.1.3.23
+ *
+ * 规范步骤:
+ * 1. 如果this值为null或undefined，抛出TypeError异常
+ * 2. 将this值转换为Object
+ * 3. 获取对象的length属性并转换为无符号32位整数
+ * 4. 处理起始索引start，如果为负则从数组末尾计算
+ * 5. 处理结束索引end，如果为负则从数组末尾计算，如果未提供则使用数组长度
+ * 6. start和end都要确保在有效范围内（0到length之间）
+ * 7. 如果计算后的end小于等于start，返回空数组
+ * 8. 创建新数组，将指定范围内的元素复制到新数组
+ * 9. 返回新数组
+ *
+ * @param start 提取起始处的索引，默认为0
+ * @param end 提取终止处的索引（不包含），默认为数组长度
+ * @returns 返回一个新数组，包含提取的元素
+ */
+(<any>Array.prototype).mySlice = function <T, U>(
+  start: number = 0,
+  end: number = this.length
+) {
+  if (this == null) {
+    throw new TypeError("this is null or not defined");
+  }
+  const O = Object(this);
+  const len = O.length >>> 0;
+
+  // 处理负数索引
+  let relativeStart = start;
+  let relativeEnd = end;
+
+  if (relativeStart < 0) {
+    relativeStart = Math.max(len + relativeStart, 0);
+  } else {
+    relativeStart = Math.min(relativeStart, len);
+  }
+
+  if (relativeEnd < 0) {
+    relativeEnd = Math.max(len + relativeEnd, 0);
+  } else {
+    relativeEnd = Math.min(relativeEnd, len);
+  }
+
+  const result: any[] = [];
+
+  // 当end小于start时，返回空数组
+  if (relativeEnd <= relativeStart) {
+    return result;
+  }
+
+  for (let k = relativeStart; k < relativeEnd; k++) {
+    if (k in O) {
+      result.push(O[k]);
+    }
+  }
+
+  return result;
+};
+
+/**
  * 模拟实现数组的splice方法
  *
  * 规范来源: ECMAScript 262 规范 22.1.3.27
@@ -553,14 +615,16 @@ export default {};
   }
 
   if (k in O) {
-    result += O[k] === null || O[k] === undefined ? "" : O[k];
+    // 等效于 result += O[k] === null || O[k] === undefined ? "" : O[k];
+    result += O[k] ?? "";
   }
   k++;
 
   while (k < len) {
     result += separator;
     if (k in O) {
-      result += O[k] === null || O[k] === undefined ? "" : O[k];
+      // 等效于 result += O[k] === null || O[k] === undefined ? "" : O[k];
+      result += O[k] ?? "";
     }
     k++;
   }
