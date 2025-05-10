@@ -352,11 +352,30 @@ export default {};
   }
   const O = Object(this);
   const len = O.length >>> 0;
-  for (let k = start; k < end; k++) {
-    if (k in O) {
-      O[k] = value;
-    }
+
+  // 处理start参数
+  let relativeStart = start;
+  // 如果start为负数，则从数组末尾计算起始位置
+  if (relativeStart < 0) {
+    relativeStart = Math.max(len + relativeStart, 0);
+  } else {
+    relativeStart = Math.min(relativeStart, len);
   }
+
+  // 处理end参数
+  let relativeEnd = end;
+  // 如果end为负数，则从数组末尾计算结束位置
+  if (relativeEnd < 0) {
+    relativeEnd = Math.max(len + relativeEnd, 0);
+  } else {
+    relativeEnd = Math.min(relativeEnd, len);
+  }
+
+  // 填充数组
+  for (let k = relativeStart; k < relativeEnd; k++) {
+    O[k] = value;
+  }
+
   return O;
 };
 
@@ -386,15 +405,17 @@ export default {};
   const O = Object(this);
   const len = O.length >>> 0;
   const result: any[] = [];
+
+  // 确保depth是整数
+  const depthNum = Math.floor(Number(depth));
+
   for (let k = 0; k < len; k++) {
     if (k in O) {
-      if (Array.isArray(O[k])) {
-        if (depth > 1) {
-          result.push(...O[k].myFlat(depth - 1));
-        } else {
-          result.push(...O[k]);
-        }
+      if (Array.isArray(O[k]) && depthNum > 0) {
+        // 只有当depth > 0时才展开数组
+        result.push(...O[k].myFlat(depthNum - 1));
       } else {
+        // 当depth = 0或元素不是数组时，直接添加元素
         result.push(O[k]);
       }
     }
@@ -426,7 +447,7 @@ export default {};
  */
 (<any>Array.prototype).mySplice = function (
   start: number,
-  deleteCount: number,
+  deleteCount?: number,
   ...items: any[]
 ) {
   if (this == null) {
@@ -434,13 +455,70 @@ export default {};
   }
   const O = Object(this);
   const len = O.length >>> 0;
-  const result: any[] = [];
-  for (let k = 0; k < len; k++) {
-    if (k in O) {
-      result.push(O[k]);
+
+  // 处理起始位置
+  let actualStart = start;
+  if (actualStart < 0) {
+    actualStart = Math.max(len + actualStart, 0);
+  } else {
+    actualStart = Math.min(actualStart, len);
+  }
+
+  // 处理删除数量
+  let actualDeleteCount = len - actualStart;
+  if (deleteCount !== undefined) {
+    actualDeleteCount = Math.min(Math.max(0, deleteCount), len - actualStart);
+  }
+
+  // 创建包含被删除元素的数组
+  const deletedElements = [];
+  for (let i = 0; i < actualDeleteCount; i++) {
+    const from = actualStart + i;
+    if (from in O) {
+      deletedElements[i] = O[from];
     }
   }
-  return result;
+
+  // 计算需要移动的元素数量
+  const itemCount = items.length;
+  const shiftCount = itemCount - actualDeleteCount;
+
+  // 如果插入的元素比删除的元素多，需要从后向前移动元素
+  if (shiftCount > 0) {
+    for (let i = len - 1; i >= actualStart + actualDeleteCount; i--) {
+      const to = i + shiftCount;
+      if (i in O) {
+        O[to] = O[i];
+      } else {
+        delete O[to];
+      }
+    }
+  }
+  // 如果插入的元素比删除的元素少，需要从前向后移动元素
+  else if (shiftCount < 0) {
+    for (let i = actualStart + actualDeleteCount; i < len; i++) {
+      const to = i + shiftCount;
+      if (i in O) {
+        O[to] = O[i];
+      } else {
+        delete O[to];
+      }
+    }
+    // 删除多余的元素
+    for (let i = len - 1; i >= len + shiftCount; i--) {
+      delete O[i];
+    }
+  }
+
+  // 插入新元素
+  for (let i = 0; i < itemCount; i++) {
+    O[actualStart + i] = items[i];
+  }
+
+  // 更新数组长度
+  O.length = len + shiftCount;
+
+  return deletedElements;
 };
 
 /**
